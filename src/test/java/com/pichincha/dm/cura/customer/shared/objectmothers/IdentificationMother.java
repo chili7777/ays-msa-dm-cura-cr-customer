@@ -4,7 +4,7 @@ import com.pichincha.dm.cura.customer.domain.entities.valueobjects.Identificatio
 
 /**
  * Mother for Identification value objects.
- * Generates random but realistic identification numbers for testing purposes.
+ * Generates faker but realistic identification numbers for testing purposes.
  */
 public final class IdentificationMother {
 
@@ -12,7 +12,7 @@ public final class IdentificationMother {
     }
 
     public static Identification random() {
-        return new Identification(FakerMother.random().idNumber().valid());
+        return new Identification(FakerMother.faker().idNumber().valid());
     }
 
     public static Identification create(String value) {

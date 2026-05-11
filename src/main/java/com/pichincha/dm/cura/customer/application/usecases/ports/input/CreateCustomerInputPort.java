@@ -1,4 +1,4 @@
-package com.pichincha.dm.cura.customer.domain.usecases.ports.input;
+package com.pichincha.dm.cura.customer.application.usecases.ports.input;
 
 import com.pichincha.dm.cura.customer.domain.entities.Customer;
 import reactor.core.publisher.Mono;
@@ -9,7 +9,5 @@ import reactor.core.publisher.Mono;
  * ensuring that the domain logic is decoupled from the specific entry points (controllers).
  */
 public interface CreateCustomerInputPort {
-
-    Mono<Void> create(Customer customer);
-
+    Mono<Void> createCustomer(Customer customer);
 }

@@ -26,6 +26,18 @@ public final class CustomerMother {
         );
     }
 
+    public static Customer randomWithNullId() {
+        return new Customer(
+                null,
+                IdentificationMother.random(),
+                FullNameMother.random(),
+                EmailMother.random(),
+                PhoneMother.random(),
+                AddressMother.random(),
+                StatusMother.random()
+        );
+    }
+
     public static Customer randomWithId(CustomerId id) {
         return new Customer(
                 id,

@@ -18,12 +18,7 @@ public class CustomerId extends Identifier {
         ensureValidUuid(value);
     }
 
-    public CustomerId(UUID value) {
-        super(value);
-    }
-
     private void ensureValidUuid(String value) {
-        UUID.fromString(value);
+        java.util.UUID.fromString(value);
     }
-
 }

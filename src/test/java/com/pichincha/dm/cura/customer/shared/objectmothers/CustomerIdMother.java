@@ -5,7 +5,7 @@ import java.util.UUID;
 
 /**
  * Mother for CustomerId value objects.
- * Generates random UUID-based identifiers for testing customer identity.
+ * Generates faker UUID-based identifiers for testing customer identity.
  */
 public final class CustomerIdMother {
 
@@ -13,7 +13,7 @@ public final class CustomerIdMother {
     }
 
     public static CustomerId random() {
-        return new CustomerId(UUID.randomUUID());
+        return new CustomerId(UUID.randomUUID().toString());
     }
 
     public static CustomerId create(String value) {
@@ -21,7 +21,7 @@ public final class CustomerIdMother {
     }
 
     public static CustomerId create(UUID value) {
-        return new CustomerId(value);
+        return new CustomerId(value.toString());
     }
 
 }

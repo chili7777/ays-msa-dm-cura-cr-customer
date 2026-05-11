@@ -2,20 +2,30 @@ package com.pichincha.dm.cura.customer.shared.objectmothers;
 
 import org.springframework.http.HttpHeaders;
 
-/**
- * Utility mother for HTTP headers.
- * Generates common headers like X-Guid and X-App for API requests.
- */
 public final class HttpHeadersMother {
+
+    private static final String X_GUID_HEADER     = "x-guid";
+    private static final String X_APP_HEADER      = "x-app";
+    private static final int    X_APP_MAX_LENGTH  = 50;
 
     private HttpHeadersMother() {
     }
 
-    public static HttpHeaders standard() {
+    public static HttpHeaders random() {
+        return create(
+                UuidMother.random().toString(),
+                FakerMother.faker().app().name()
+        );
+    }
+
+    public static HttpHeaders create(String xGuid, String xApp) {
         HttpHeaders headers = new HttpHeaders();
-        headers.add("X-Guid", UuidMother.random());
-        headers.add("X-App", "test-app");
+        headers.add(X_GUID_HEADER, xGuid);
+        headers.add(X_APP_HEADER, truncate(xApp, X_APP_MAX_LENGTH));
         return headers;
     }
 
+    private static String truncate(String value, int maxLength) {
+        return value.length() > maxLength ? value.substring(0, maxLength) : value;
+    }
 }

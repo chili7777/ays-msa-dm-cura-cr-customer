@@ -4,7 +4,7 @@ import com.pichincha.dm.cura.customer.domain.entities.valueobjects.FullName;
 
 /**
  * Mother for FullName value objects.
- * Generates random person names using data faker.
+ * Generates faker person names using data faker.
  */
 public final class FullNameMother {
 
@@ -12,7 +12,7 @@ public final class FullNameMother {
     }
 
     public static FullName random() {
-        return new FullName(FakerMother.random().name().fullName());
+        return new FullName(FakerMother.faker().name().fullName());
     }
 
     public static FullName create(String value) {

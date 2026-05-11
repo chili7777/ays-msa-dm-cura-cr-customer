@@ -4,7 +4,7 @@ import com.pichincha.dm.cura.customer.domain.entities.valueobjects.Status;
 
 /**
  * Mother for Status value objects.
- * Generates random boolean status values.
+ * Generates faker boolean status values.
  */
 public final class StatusMother {
 
@@ -12,7 +12,7 @@ public final class StatusMother {
     }
 
     public static Status random() {
-        return new Status(FakerMother.random().bool().bool());
+        return new Status(FakerMother.faker().bool().bool());
     }
 
     public static Status active() {

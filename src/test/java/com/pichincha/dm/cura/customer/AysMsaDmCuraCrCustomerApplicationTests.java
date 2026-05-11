@@ -10,7 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 class AysMsaDmCuraCrCustomerApplicationTests {
 
 	@Test
-	void contextLoads() {
+	void given_applicationConfiguration_when_loadContext_then_startSuccessfully() {
 	}
 
 }

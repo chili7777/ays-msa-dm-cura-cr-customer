@@ -4,7 +4,7 @@ import com.pichincha.dm.cura.customer.domain.entities.valueobjects.Phone;
 
 /**
  * Mother for Phone value objects.
- * Generates random phone numbers.
+ * Generates faker phone numbers.
  */
 public final class PhoneMother {
 
@@ -12,7 +12,7 @@ public final class PhoneMother {
     }
 
     public static Phone random() {
-        return new Phone(FakerMother.random().phoneNumber().cellPhone());
+        return new Phone(FakerMother.faker().phoneNumber().cellPhone());
     }
 
     public static Phone create(String value) {

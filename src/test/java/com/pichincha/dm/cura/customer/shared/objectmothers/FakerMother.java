@@ -4,7 +4,7 @@ import net.datafaker.Faker;
 
 /**
  * Provides a centralized instance of the data generation library.
- * Ensures consistent configuration for all random data generators used in tests.
+ * Ensures consistent configuration for all faker data generators used in tests.
  */
 public final class FakerMother {
 
@@ -13,7 +13,7 @@ public final class FakerMother {
     private FakerMother() {
     }
 
-    public static Faker random() {
+    public static Faker faker() {
         return FAKER;
     }
 
