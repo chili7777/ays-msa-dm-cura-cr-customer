@@ -28,6 +28,12 @@ test(<scope>): add failing <endpoint> contract test
 2. Return only what is needed for the test to pass.
 3. Run targeted tests, then run full `test` task.
 
+If a DTO or model is required, ensure it aligns with the OpenAPI contract. Use the generator task if necessary:
+
+```bash
+./gradlew buildSpringServer
+```
+
 Suggested commit type:
 ```text
 feat(<scope>): implement <endpoint> endpoint

@@ -8,8 +8,14 @@ Use this template for new endpoints.
 class <ControllerName>Test extends RequestTestCase {
 
     @Test
-    void should<ExpectedBehavior>() throws Exception {
-        assertResponse("<endpoint>", <statusCode>, "<expectedJson>");
+    void given_<precondition>_when_<action>_then_<expectedResult>() throws Exception {
+        String requestBody = """
+                {
+                  "field": "value"
+                }
+                """;
+
+        assertRequestWithBody("POST", "<endpoint>", requestBody, <statusCode>);
     }
 
 }
