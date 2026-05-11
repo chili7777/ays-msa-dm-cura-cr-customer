@@ -1,6 +1,12 @@
 package com.pichincha.dm.cura.customer.domain.entities;
 
 import com.pichincha.dm.cura.customer.domain.entities.identifiers.CustomerId;
+import com.pichincha.dm.cura.customer.domain.entities.valueobjects.Address;
+import com.pichincha.dm.cura.customer.domain.entities.valueobjects.Email;
+import com.pichincha.dm.cura.customer.domain.entities.valueobjects.FullName;
+import com.pichincha.dm.cura.customer.domain.entities.valueobjects.Identification;
+import com.pichincha.dm.cura.customer.domain.entities.valueobjects.Phone;
+import com.pichincha.dm.cura.customer.domain.entities.valueobjects.Status;
 
 /**
  * Domain record representing a customer within the core business logic.
@@ -8,10 +14,10 @@ import com.pichincha.dm.cura.customer.domain.entities.identifiers.CustomerId;
  * primary model for customer lifecycle operations and validation.
  */
 public record Customer(CustomerId id,
-                       String identification,
-                       String fullName,
-                       String email,
-                       String phone,
-                       String address,
-                       Boolean status) {
+                       Identification identification,
+                       FullName fullName,
+                       Email email,
+                       Phone phone,
+                       Address address,
+                       Status status) {
 }
