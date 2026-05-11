@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.pichincha.dm.cura.customer.domain.entities.Customer;
 import com.pichincha.dm.cura.customer.infrastructure.dataprovider.repository.mapper.CustomerRepositoryMapperImpl;
+import com.pichincha.dm.cura.customer.shared.objectmothers.CustomerMother;
+import com.pichincha.dm.cura.customer.shared.objectmothers.IdentificationMother;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -15,41 +17,34 @@ import org.junit.jupiter.api.Test;
  */
 final class InMemoryCustomerRepositoryTest {
 
-    private static final String IDENTIFICATION = "1712345678";
-    private static final String FULL_NAME = "Juan Perez";
-    private static final String EMAIL = "juan.perez@example.com";
-    private static final String PHONE = "0987654321";
-    private static final String ADDRESS = "Av. Siempre Viva 123";
-    private static final Boolean STATUS = true;
-
     @Test
     void given_validCustomer_when_save_then_customerIsPersisted() {
         InMemoryCustomerRepository repository = new InMemoryCustomerRepository(new CustomerRepositoryMapperImpl());
-        Customer customer = new Customer(IDENTIFICATION, FULL_NAME, EMAIL, PHONE, ADDRESS, STATUS);
+        Customer customer = CustomerMother.random();
 
         repository.save(customer).block();
 
-        Customer found = repository.findByIdentification(IDENTIFICATION).block();
+        Customer found = repository.findByIdentification(customer.identification().getValue()).block();
         assertNotNull(found);
     }
 
     @Test
     void given_savedCustomer_when_findByIdentification_then_returnCustomer() {
         InMemoryCustomerRepository repository = new InMemoryCustomerRepository(new CustomerRepositoryMapperImpl());
-        Customer customer = new Customer(IDENTIFICATION, FULL_NAME, EMAIL, PHONE, ADDRESS, STATUS);
+        Customer customer = CustomerMother.random();
         repository.save(customer).block();
 
-        Customer found = repository.findByIdentification(IDENTIFICATION).block();
+        Customer found = repository.findByIdentification(customer.identification().getValue()).block();
 
         assertNotNull(found);
-        assertTrue(found.identification().equals(IDENTIFICATION));
+        assertTrue(found.identification().equals(customer.identification()));
     }
 
     @Test
     void given_nonExistingIdentification_when_findByIdentification_then_returnEmpty() {
         InMemoryCustomerRepository repository = new InMemoryCustomerRepository(new CustomerRepositoryMapperImpl());
 
-        boolean isPresent = repository.findByIdentification("NON-EXISTING").blockOptional().isPresent();
+        boolean isPresent = repository.findByIdentification(IdentificationMother.random().getValue()).blockOptional().isPresent();
 
         assertFalse(isPresent);
     }
