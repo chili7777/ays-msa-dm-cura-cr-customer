@@ -1,0 +1,327 @@
+openapi: 3.0.3
+info:
+  title: Current Account - Customer API
+  version: 1.0.0
+  description: |
+    Customer microservice contract for reactive persistence with R2DBC.
+    This microservice owns customer data and person attributes in an independent database.
+servers:
+  - url: /api/v1
+tags:
+  - name: Customers
+paths:
+  /customers:
+    get:
+      operationId: listCustomers
+      tags: [Customers]
+      summary: List customers
+      parameters:
+        - $ref: '#/components/parameters/XGuid'
+        - $ref: '#/components/parameters/XApp'
+        - name: identification
+          in: query
+          schema:
+            type: string
+            maxLength: 20
+        - name: status
+          in: query
+          schema:
+            type: boolean
+      responses:
+        '200':
+          description: Customer list
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CustomerDto'
+        '500':
+          $ref: '#/components/responses/InternalError'
+    post:
+      operationId: createCustomer
+      tags: [Customers]
+      summary: Create customer
+      parameters:
+        - $ref: '#/components/parameters/XGuid'
+        - $ref: '#/components/parameters/XApp'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerCreateRequestDto'
+      responses:
+        '201':
+          description: Customer created
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '409':
+          $ref: '#/components/responses/ConflictError'
+        '500':
+          $ref: '#/components/responses/InternalError'
+  /customers/{customerId}:
+    get:
+      operationId: getCustomerById
+      tags: [Customers]
+      summary: Get customer by id
+      parameters:
+        - $ref: '#/components/parameters/XGuid'
+        - $ref: '#/components/parameters/XApp'
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '200':
+          description: Customer found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerDto'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    put:
+      operationId: replaceCustomer
+      tags: [Customers]
+      summary: Replace customer
+      parameters:
+        - $ref: '#/components/parameters/XGuid'
+        - $ref: '#/components/parameters/XApp'
+        - $ref: '#/components/parameters/CustomerId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerUpdateRequestDto'
+      responses:
+        '200':
+          description: Customer updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    patch:
+      operationId: patchCustomer
+      tags: [Customers]
+      summary: Patch customer
+      parameters:
+        - $ref: '#/components/parameters/XGuid'
+        - $ref: '#/components/parameters/XApp'
+        - $ref: '#/components/parameters/CustomerId'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CustomerPatchRequestDto'
+      responses:
+        '200':
+          description: Customer patched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CustomerDto'
+        '400':
+          $ref: '#/components/responses/BadRequest'
+        '404':
+          $ref: '#/components/responses/NotFound'
+    delete:
+      operationId: deleteCustomer
+      tags: [Customers]
+      summary: Delete customer (logical)
+      parameters:
+        - $ref: '#/components/parameters/XGuid'
+        - $ref: '#/components/parameters/XApp'
+        - $ref: '#/components/parameters/CustomerId'
+      responses:
+        '204':
+          description: Customer deactivated
+        '404':
+          $ref: '#/components/responses/NotFound'
+components:
+  parameters:
+    XGuid:
+      name: x-guid
+      in: header
+      required: true
+      schema:
+        type: string
+        format: uuid
+    XApp:
+      name: x-app
+      in: header
+      required: true
+      schema:
+        type: string
+        maxLength: 50
+    CustomerId:
+      name: customerId
+      in: path
+      required: true
+      schema:
+        type: string
+        format: uuid
+  responses:
+    BadRequest:
+      description: Invalid request
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModelDto'
+    NotFound:
+      description: Resource not found
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModelDto'
+    ConflictError:
+      description: Business conflict
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModelDto'
+    InternalError:
+      description: Internal error
+      content:
+        application/json:
+          schema:
+            $ref: '#/components/schemas/ErrorModelDto'
+  schemas:
+    PersonBaseDto:
+      type: object
+      required: [name, gender, age, identification, address, phone]
+      properties:
+        name:
+          type: string
+          maxLength: 120
+        gender:
+          type: string
+          enum: [MALE, FEMALE, OTHER]
+        age:
+          type: integer
+          minimum: 0
+          maximum: 130
+        identification:
+          type: string
+          maxLength: 20
+        address:
+          type: string
+          maxLength: 180
+        phone:
+          type: string
+          maxLength: 20
+    CustomerDto:
+      allOf:
+        - $ref: '#/components/schemas/PersonBaseDto'
+        - type: object
+          required: [customerId, password, status]
+          properties:
+            customerId:
+              type: string
+              format: uuid
+            password:
+              type: string
+              minLength: 8
+              maxLength: 120
+            status:
+              type: boolean
+    CustomerCreateRequestDto:
+      allOf:
+        - $ref: '#/components/schemas/PersonBaseDto'
+        - type: object
+          required: [password, status]
+          properties:
+            password:
+              type: string
+              minLength: 8
+              maxLength: 120
+            status:
+              type: boolean
+    CustomerUpdateRequestDto:
+      allOf:
+        - $ref: '#/components/schemas/PersonBaseDto'
+        - type: object
+          required: [password, status]
+          properties:
+            password:
+              type: string
+              minLength: 8
+              maxLength: 120
+            status:
+              type: boolean
+    CustomerPatchRequestDto:
+      type: object
+      properties:
+        name:
+          type: string
+          maxLength: 120
+        gender:
+          type: string
+          enum: [MALE, FEMALE, OTHER]
+        age:
+          type: integer
+          minimum: 0
+          maximum: 130
+        identification:
+          type: string
+          maxLength: 20
+        address:
+          type: string
+          maxLength: 180
+        phone:
+          type: string
+          maxLength: 20
+        password:
+          type: string
+          minLength: 8
+          maxLength: 120
+        status:
+          type: boolean
+    ErrorModelDto:
+      type: object
+      required: [title, detail, instance, type]
+      properties:
+        title:
+          type: string
+          maxLength: 50
+          example: Bad Request
+        detail:
+          type: string
+          maxLength: 120
+          example: Validation error in request payload
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/ErrorListDto'
+        instance:
+          type: string
+          maxLength: 50
+          example: '0188'
+        type:
+          type: string
+          maxLength: 100
+          example: /current-account/v1/customers
+        resource:
+          type: string
+          example: CustomersController/createCustomer
+        component:
+          type: string
+          example: TX-CUS-001
+        backend:
+          type: string
+          example: '00045'
+    ErrorListDto:
+      type: object
+      properties:
+        code:
+          type: string
+          example: CUS-001
+        message:
+          type: string
+          example: Technical validation error
+        businessMessage:
+          type: string
+          example: Customer identification already exists
