@@ -5,6 +5,8 @@ import com.pichincha.dm.cura.customer.domain.usecases.ports.output.CreateCustome
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
+import org.springframework.stereotype.Repository;
 import reactor.core.publisher.Mono;
 
 /**
@@ -12,6 +14,8 @@ import reactor.core.publisher.Mono;
  * Stores customer records in a concurrent-safe-like map (HashMap used in a non-concurrent way for now)
  * for fast prototyping and testing without requiring a real database.
  */
+@Repository
+@Profile("test")
 @RequiredArgsConstructor
 public final class InMemoryCustomerRepository implements CreateCustomerOutputPort {
 
