@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: ays-msa-dm-cura-cr-customer-production
+
+server:
+  port: 8080
+
+# Production environment configuration
+app:
+  environment: production
+  log-level: ERROR
