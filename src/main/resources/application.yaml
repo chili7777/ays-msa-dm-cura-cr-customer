@@ -1,3 +1,8 @@
 spring:
   application:
     name: ays-msa-dm-cura-cr-customer
+  profiles:
+    active: ${AYS_MSA_CR_CUSTOMER_PROFILE:default}
+
+server:
+  port: ${AYS_MSA_CR_CUSTOMER_PORT:8080}
