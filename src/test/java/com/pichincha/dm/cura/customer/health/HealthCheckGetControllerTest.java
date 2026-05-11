@@ -10,7 +10,7 @@ class HealthCheckGetControllerTest extends RequestTestCase {
 
     @Test
     void shouldReturnHealthCheckStatusWhenInvoked() throws Exception {
-        assertResponse("/health-check", 200, "{ \"status\": \"ok ✅\" }");
+        assertResponse("/health-check", 200, "{ \"status\": \"ok\" }");
     }
 
 }
