@@ -21,7 +21,7 @@ public interface CustomerHttpRequestMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "identification", source = "identification", qualifiedByName = "toIdentification")
-    @Mapping(target = "fullName", source = "fullName", qualifiedByName = "toFullName")
+    @Mapping(target = "fullName", source = "name", qualifiedByName = "toFullName")
     @Mapping(target = "email", source = "email", qualifiedByName = "toEmail")
     @Mapping(target = "phone", source = "phone", qualifiedByName = "toPhone")
     @Mapping(target = "address", source = "address", qualifiedByName = "toAddress")

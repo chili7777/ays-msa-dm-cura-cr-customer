@@ -14,7 +14,7 @@ public final class CustomerCreateRequestDtoMother {
     public static CustomerCreateRequestDto random() {
         CustomerCreateRequestDto dto = new CustomerCreateRequestDto();
         dto.setIdentification(IdentificationMother.random().getValue());
-        dto.setFullName(FullNameMother.random().getValue());
+        dto.setName(FullNameMother.random().getValue());
         dto.setEmail(EmailMother.random().getValue());
         dto.setPhone(PhoneMother.random().getValue());
         dto.setAddress(AddressMother.random().getValue());

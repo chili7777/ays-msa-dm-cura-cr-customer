@@ -192,7 +192,7 @@ components:
   schemas:
     PersonBaseDto:
       type: object
-      required: [name, gender, age, identification, address, phone]
+      required: [name, gender, age, identification, address, phone, email]
       properties:
         name:
           type: string
@@ -213,6 +213,10 @@ components:
         phone:
           type: string
           maxLength: 20
+        email:
+          type: string
+          format: email
+          maxLength: 120
     CustomerDto:
       allOf:
         - $ref: '#/components/schemas/PersonBaseDto'

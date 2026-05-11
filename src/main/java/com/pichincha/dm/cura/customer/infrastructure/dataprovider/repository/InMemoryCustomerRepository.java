@@ -17,7 +17,6 @@ import reactor.core.publisher.Mono;
  * for fast prototyping and testing without requiring a real database.
  */
 @Repository
-@Profile("test")
 @RequiredArgsConstructor
 public final class InMemoryCustomerRepository implements CreateCustomerOutputPort {
 
