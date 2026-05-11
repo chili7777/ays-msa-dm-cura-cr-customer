@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import com.pichincha.dm.cura.customer.domain.entities.Customer;
+import com.pichincha.dm.cura.customer.infrastructure.dataprovider.repository.mapper.CustomerRepositoryMapperImpl;
 import org.junit.jupiter.api.Test;
 
 /**
@@ -23,7 +24,7 @@ final class InMemoryCustomerRepositoryTest {
 
     @Test
     void given_validCustomer_when_save_then_customerIsPersisted() {
-        InMemoryCustomerRepository repository = new InMemoryCustomerRepository();
+        InMemoryCustomerRepository repository = new InMemoryCustomerRepository(new CustomerRepositoryMapperImpl());
         Customer customer = new Customer(IDENTIFICATION, FULL_NAME, EMAIL, PHONE, ADDRESS, STATUS);
 
         repository.save(customer).block();
@@ -34,7 +35,7 @@ final class InMemoryCustomerRepositoryTest {
 
     @Test
     void given_savedCustomer_when_findByIdentification_then_returnCustomer() {
-        InMemoryCustomerRepository repository = new InMemoryCustomerRepository();
+        InMemoryCustomerRepository repository = new InMemoryCustomerRepository(new CustomerRepositoryMapperImpl());
         Customer customer = new Customer(IDENTIFICATION, FULL_NAME, EMAIL, PHONE, ADDRESS, STATUS);
         repository.save(customer).block();
 
@@ -46,7 +47,7 @@ final class InMemoryCustomerRepositoryTest {
 
     @Test
     void given_nonExistingIdentification_when_findByIdentification_then_returnEmpty() {
-        InMemoryCustomerRepository repository = new InMemoryCustomerRepository();
+        InMemoryCustomerRepository repository = new InMemoryCustomerRepository(new CustomerRepositoryMapperImpl());
 
         boolean isPresent = repository.findByIdentification("NON-EXISTING").blockOptional().isPresent();
 

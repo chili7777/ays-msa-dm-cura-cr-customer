@@ -2,6 +2,8 @@ package com.pichincha.dm.cura.customer.infrastructure.dataprovider.repository;
 
 import com.pichincha.dm.cura.customer.domain.entities.Customer;
 import com.pichincha.dm.cura.customer.domain.usecases.ports.output.CreateCustomerOutputPort;
+import com.pichincha.dm.cura.customer.infrastructure.dataprovider.repository.entities.CustomerEntity;
+import com.pichincha.dm.cura.customer.infrastructure.dataprovider.repository.mapper.CustomerRepositoryMapper;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
@@ -19,11 +21,13 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public final class InMemoryCustomerRepository implements CreateCustomerOutputPort {
 
-    private final Map<String, Customer> customers = new HashMap<>();
+    private final Map<String, CustomerEntity> customers = new HashMap<>();
+    private final CustomerRepositoryMapper mapper;
 
     @Override
     public Mono<Void> save(Customer customer) {
-        customers.put(customer.identification(), customer);
+        CustomerEntity entity = mapper.toEntity(customer);
+        customers.put(entity.identification(), entity);
         return Mono.empty();
     }
 
@@ -33,7 +37,8 @@ public final class InMemoryCustomerRepository implements CreateCustomerOutputPor
      * @return a Mono containing the customer if found, or empty otherwise.
      */
     public Mono<Customer> findByIdentification(String identification) {
-        return Mono.justOrEmpty(customers.get(identification));
+        return Mono.justOrEmpty(customers.get(identification))
+                .map(mapper::toDomain);
     }
 
 }

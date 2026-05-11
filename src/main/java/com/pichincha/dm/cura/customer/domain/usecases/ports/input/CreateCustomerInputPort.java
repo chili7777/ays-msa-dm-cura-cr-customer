@@ -10,11 +10,6 @@ import reactor.core.publisher.Mono;
  */
 public interface CreateCustomerInputPort {
 
-    Mono<Void> create(String identification,
-                      String fullName,
-                      String email,
-                      String phone,
-                      String address,
-                      Boolean status);
+    Mono<Void> create(Customer customer);
 
 }

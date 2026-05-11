@@ -19,13 +19,7 @@ public class CustomerCreator implements CreateCustomerInputPort {
     private final CreateCustomerOutputPort repository;
 
     @Override
-    public Mono<Void> create(String identification,
-                             String fullName,
-                             String email,
-                             String phone,
-                             String address,
-                             Boolean status) {
-        Customer customer = new Customer(identification, fullName, email, phone, address, status);
+    public Mono<Void> create(Customer customer) {
         return repository.save(customer);
     }
 

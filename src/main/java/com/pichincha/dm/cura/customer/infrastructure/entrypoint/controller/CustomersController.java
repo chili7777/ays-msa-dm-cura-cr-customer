@@ -2,6 +2,7 @@ package com.pichincha.dm.cura.customer.infrastructure.entrypoint.controller;
 
 import com.pichincha.dm.cura.customer.domain.usecases.ports.input.CreateCustomerInputPort;
 import com.pichincha.dm.cura.customer.infrastructure.entrypoint.controller.entities.CustomerCreateRequestDto;
+import com.pichincha.dm.cura.customer.infrastructure.entrypoint.controller.mapper.CustomerHttpRequestMapper;
 import java.util.UUID;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +21,7 @@ public class CustomersController implements CustomersApi {
 
     private static final ResponseEntity<Void> CREATED_RESPONSE = ResponseEntity.status(HttpStatus.CREATED).build();
     private final CreateCustomerInputPort createCustomerUseCase;
+    private final CustomerHttpRequestMapper mapper;
 
     @Override
     public Mono<ResponseEntity<Void>> createCustomer(UUID xGuid,
@@ -27,14 +29,9 @@ public class CustomersController implements CustomersApi {
                                                      Mono<CustomerCreateRequestDto> customerCreateRequestDto,
                                                      ServerWebExchange exchange) {
         return customerCreateRequestDto
-                .flatMap(request -> createCustomerUseCase.create(
-                        request.getIdentification(),
-                        request.getFullName(),
-                        request.getEmail(),
-                        request.getPhone(),
-                        request.getAddress(),
-                        request.getStatus()
-                ).thenReturn(CREATED_RESPONSE));
+                .map(mapper::toCustomer)
+                .flatMap(createCustomerUseCase::create)
+                .thenReturn(CREATED_RESPONSE);
     }
 
 }
